@@ -24,11 +24,19 @@ const SUSPICIOUS_TX: Omit<Transaction, "id" | "timestamp"> = {
 };
 
 export default function Home() {
+  const [isAppLoading, setIsAppLoading] = useState(true);
   const [simulationState, setSimulationState] = useState<SimulationState>("idle");
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [isReportVisible, setIsReportVisible] = useState(false);
   const [threatsDetected, setThreatsDetected] = useState(142);
   const [fundsProtected, setFundsProtected] = useState(12400000);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsAppLoading(false);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Background random normal transactions
   useEffect(() => {
@@ -89,6 +97,28 @@ export default function Home() {
     setIsReportVisible(false);
     setTransactions([]);
   };
+
+  if (isAppLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white">
+        <div className="flex flex-col items-center gap-6 animate-pulse">
+          {/* We assume the user saves the attached image as logo.png in the public folder */}
+          <img 
+            src="/logo.jpeg" 
+            alt="Audit Swarm Logo" 
+            className="w-64 md:w-80 h-auto object-contain"
+            onError={(e) => {
+              // Fallback if they haven't saved the logo yet
+              e.currentTarget.style.display = 'none';
+              document.getElementById('fallback-text')!.style.display = 'block';
+            }}
+          />
+          <h2 id="fallback-text" className="hidden text-3xl font-bold font-sans text-gray-900 tracking-tight">On-Chain Audit Swarm</h2>
+          <div className="w-8 h-8 border-4 border-gray-200 border-t-black rounded-full animate-spin mt-4"></div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <main className="min-h-screen relative pb-20">

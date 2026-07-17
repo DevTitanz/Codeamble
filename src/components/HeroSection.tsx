@@ -30,7 +30,7 @@ export default function HeroSection({
 
       {/* Main Headline */}
       <h1 className="text-5xl md:text-7xl font-bold mb-6 font-sans tracking-tight text-black max-w-4xl leading-tight">
-        Protect Smart Contracts <br className="hidden md:block" /> with AI Agents
+        On-Chain Audit Swarm
       </h1>
 
       {/* Subheadline */}
